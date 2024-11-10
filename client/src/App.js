@@ -16,9 +16,11 @@ function App() {
     "Gluten-Free": false,
     "Dairy-Free": false,
   });
+  const [desiredFoodCategory, setDesiredFoodCategory] = useState(null);
+  const [screen, setScreen] = useState("begin"); // Track current screen (begin, preferences, or food selection)
 
   const handleBeginClick = () => {
-    setShowQuestion(true);
+    setScreen("preferences"); // Move to preferences screen
   };
 
   const handleTogglePreference = (preference) => {
@@ -28,19 +30,29 @@ function App() {
     }));
   };
 
-  const handleSubmit = () => {
-    console.log("Selected preferences:", selectedPreferences);
-    sendToAPI(selectedPreferences);
+  const handleFoodSelection = (category) => {
+    setDesiredFoodCategory(category);
   };
 
-  const sendToAPI = async (preferences) => {
+  const handleNext = () => {
+    // Transition to the food selection screen after preferences are selected
+    setScreen("foodSelection");
+  };
+
+  const handleSubmit = () => {
+    console.log("Selected preferences:", selectedPreferences);
+    console.log("Desired food category:", desiredFoodCategory);
+    sendToAPI(selectedPreferences, desiredFoodCategory);
+  };
+
+  const sendToAPI = async (preferences, foodCategory) => {
     try {
       const response = await fetch("https://your-api-url.com/submit", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ preferences }),
+        body: JSON.stringify({ preferences, foodCategory }),
       });
       const data = await response.json();
       console.log("Data sent to API:", data);
@@ -67,21 +79,25 @@ function App() {
         <div className="w-full h-full mt-16 px-4 py-6 flex flex-col justify-center items-center overflow-y-auto">
           <Header />
 
-          {/* Conditionally render based on state */}
-          {!showQuestion ? (
+          {/* Begin Screen */}
+          {screen === "begin" && (
             <>
               <h1 className="text-xl font-semibold text-center">
                 Let's find your{" "}
-                <span style={{ color: "#F36359" }}>perfect munch</span>.
+                <span style={{ color: "#F36359" }}>perfect munch.</span>
+              </h1>
+              <Button label={"Start"} onClick={handleBeginClick} />
+            </>
+          )}
+
+          {/* Dietary Preferences Screen */}
+          {screen === "preferences" && (
+            <>
+              <h1 className="text-xl font-semibold text-center">
+                Choose your dietary preferences
               </h1>
 
-              <Button label={"Begin"} onClick={handleBeginClick} />
-            </>
-          ) : (
-            <>
-              {/* Chat bubble */}
-              <ChatBubble />
-
+              {/* Preference Tiles Section */}
               <div className="grid grid-cols-2 gap-4 mb-6">
                 {preferences.map((preference) => (
                   <PreferenceTile
@@ -92,7 +108,25 @@ function App() {
                   />
                 ))}
               </div>
-              <Button label={"next"} onClick={handleSubmit} />
+
+              {/* Next Button */}
+              <Button label={"Next"} onClick={handleNext} />
+            </>
+          )}
+
+          {/* Desired Food Category Screen */}
+          {screen === "foodSelection" && (
+            <>
+              {/* Chat bubble */}
+              <ChatBubble />
+
+              {/* Food Category Selection */}
+              <FoodCardContainer
+                onSelectCategory={handleFoodSelection}
+              />
+
+              {/* Submit Button */}
+              <Button label={"Submit"} onClick={handleSubmit} />
             </>
           )}
         </div>
