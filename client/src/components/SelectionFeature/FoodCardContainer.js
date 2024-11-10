@@ -4,10 +4,10 @@ import FoodCard from "./FoodCard";
 
 function FoodCardContainer() {
   const mainCategories = [
-    { name: "C1", image: "https://example.com/sushi.jpg" },
-    { name: "C2", image: "https://example.com/pizza.jpg" },
-    { name: "C3", image: "https://example.com/pasta.jpg" },
-    { name: "C4", image: "https://example.com/taco.jpg" },
+    { name: "Card1", image: "https://example.com/sushi.jpg" },
+    { name: "Card2", image: "https://example.com/pizza.jpg" },
+    { name: "Card3", image: "https://example.com/pasta.jpg" },
+    { name: "Card4", image: "https://example.com/taco.jpg" },
   ];
 
   const [cardOneIndex, setCardOneIndex] = useState(0);
