@@ -1,13 +1,10 @@
-import logo from './logo.svg';
 import './App.css';
+import Header from './components/Header.js';
 
 function App() {
   return (
     <div className="App">
-      <p class="text-lg text-blue-700 font-semibold">
-  This is a simple paragraph styled with Tailwind CSS.
-</p>
-
+      <Header />
     </div>
   );
 }
