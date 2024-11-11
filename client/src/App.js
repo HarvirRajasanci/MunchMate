@@ -1,12 +1,12 @@
 import "./App.css";
 import Header from "./components/Header";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import PreferenceTile from "./components/PreferenceTile";
 import ChatBubble from "./components/ChatBubble";
 import Button from "./components/Button";
 import FoodCardContainer from "./components/SelectionFeature/FoodCardContainer.js";
 import axios from "axios";
-
+import RestaurantList from "./components/RestaurantList.js";
 
 function App() {
   const preferences = ["Vegetarian", "Vegan", "Gluten-Free", "None"];
@@ -18,11 +18,11 @@ function App() {
     "None": false,
   });
   const [desiredFoodCategory, setDesiredFoodCategory] = useState(null);
-  const [screen, setScreen] = useState("begin"); // Track current screen (begin, preferences, or food selection)
+  const [screen, setScreen] = useState("begin");
   const [restaurants, setRestaurants] = useState([]);
 
   const handleBeginClick = () => {
-    setScreen("preferences"); // Move to preferences screen
+    setScreen("preferences");
   };
 
   const handleTogglePreference = (preference) => {
@@ -37,7 +37,6 @@ function App() {
   };
 
   const handleNext = () => {
-    // Transition to the food selection screen after preferences are selected
     setScreen("foodSelection");
   };
 
@@ -49,33 +48,30 @@ function App() {
 
   const sendToAPI = async (preferences, category) => {
     const backendUrl = "http://localhost:5000/api/restaurants";
-    
-    // Create a list of preferences to append to the keyword (this is just one approach)
+
     const preferenceKeywords = Object.keys(preferences)
       .filter(preference => preferences[preference])
-      .join(", "); // Create a comma-separated list of active preferences
-  
-    // Construct the keyword, including dietary preferences and food category
+      .join(", ");
+
     const keyword = `${preferenceKeywords} ${category}`;
-  
+
     try {
-      // Send a GET request with preferences and category as query parameters
       const response = await axios.get(backendUrl, {
-        params: {
-          keyword, // Send the constructed keyword
-        },
+        params: { keyword },
       });
 
       const restaurantResults = response.data.results;
 
-      console.log(restaurantResults);
-
-      const restaurantDetails = restaurantResults.map(restaurant => ({
+      const restaurantDetails = restaurantResults.map((restaurant) => ({
         name: restaurant.name,
         address: restaurant.vicinity,
+        icon: restaurant.photos && restaurant.photos.length > 0 
+          ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${restaurant.photos[0].photo_reference}&key=AIzaSyBd2BfuaPYKS4fHN1kS86JBC8GFu2Z9fEI`
+          : '',
       }));
 
-      console.log(restaurantDetails);
+      setRestaurants(restaurantDetails);
+      setScreen("restaurantResults");
 
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -84,9 +80,7 @@ function App() {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      {/* Phone container */}
       <div className="relative w-[375px] h-[720px] bg-[#FFF5E6] rounded-3xl shadow-lg border-8 border-gray-300 overflow-hidden mx-auto">
-        {/* Fixed Top Bar */}
         <div className="absolute top-0 left-0 w-full h-14 bg-gray-200 rounded-t-3xl flex items-center justify-between px-4 z-10">
           <div className="h-2 w-8 bg-gray-400 rounded-full"></div>
           <div className="flex space-x-2">
@@ -96,31 +90,22 @@ function App() {
           </div>
         </div>
 
-        {/* Content Area with Padding to Avoid Overlap with Header */}
         <div className="w-full h-full mt-16 px-4 py-6 flex flex-col justify-center items-center overflow-y-auto">
           <Header />
 
-          {/* Begin Screen */}
           {screen === "begin" && (
             <>
               <h1 className="text-xl font-semibold text-center mb-5">
-                Let's find your{" "}
-                <span style={{ color: "#F36359" }}>perfect munch.</span>
+                Let's find your <span style={{ color: "#F36359" }}>perfect munch.</span>
               </h1>
               <Button label={"Start"} onClick={handleBeginClick} />
             </>
           )}
 
-          {/* Dietary Preferences Screen */}
           {screen === "preferences" && (
             <>
-            {/* Chat bubble */}
-            <ChatBubble heading={"Hello!"} text={"Let's set up your preferences"}/>
-              <h1 className="text- font-semibold text-center mb-4">
-                What are your dietary restrictions?
-              </h1>
-
-              {/* Preference Tiles Section */}
+              <ChatBubble heading={"Hello!"} text={"Let's set up your preferences"} />
+              <h1 className="text-xl font-semibold text-center mb-4">What are your dietary restrictions?</h1>
               <div className="grid grid-cols-2 gap-4 mb-6">
                 {preferences.map((preference) => (
                   <PreferenceTile
@@ -131,21 +116,21 @@ function App() {
                   />
                 ))}
               </div>
-
-              {/* Next Button */}
               <Button label={"Next"} onClick={handleNext} />
             </>
           )}
 
-          {/* Desired Food Category Screen */}
           {screen === "foodSelection" && (
             <>
-              {/* Food Category Selection */}
               <FoodCardContainer
                 setDesiredFoodCategory={handleFoodSelection}
                 handleSubmit={handleSubmit}
               />
             </>
+          )}
+
+          {screen === "restaurantResults" && (
+            <RestaurantList restaurants={restaurants} />
           )}
         </div>
       </div>
