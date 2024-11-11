@@ -42,27 +42,34 @@ function FoodCardContainer() {
   };
 
   return (
-    <div className="flex space-x-4">
-      {/*Card1 - show if visible*/}
-      {isCardOneVisible && cardOneIndex < mainCategories.length && (
-        <FoodCard
-          key="card-one"
-          name={mainCategories[cardOneIndex].name}
-          image={mainCategories[cardOneIndex].image}
-          onSelect={handleCardOneSelect}
-        />
-      )}
-      {/*Card2 - show if visible*/}
-      {isCardTwoVisible && cardTwoIndex < mainCategories.length && (
-        <FoodCard
-          key="card-two"
-          name={mainCategories[cardTwoIndex].name}
-          image={mainCategories[cardTwoIndex].image}
-          onSelect={handleCardTwoSelect}
-        />
-      )}
+    <div className="flex flex-col items-center space-y-4">
+      {/* Title above the cards */}
+      <h1 className="text-xl font-semibold">Which do you prefer?</h1>
+  
+      {/* Cards container */}
+      <div className="flex space-x-4">
+        {/* Card 1 - show if visible */}
+        {isCardOneVisible && cardOneIndex < mainCategories.length && (
+          <FoodCard
+            key="card-one"
+            name={mainCategories[cardOneIndex].name}
+            image={mainCategories[cardOneIndex].image}
+            onSelect={handleCardOneSelect}
+          />
+        )}
+  
+        {/* Card 2 - show if visible */}
+        {isCardTwoVisible && cardTwoIndex < mainCategories.length && (
+          <FoodCard
+            key="card-two"
+            name={mainCategories[cardTwoIndex].name}
+            image={mainCategories[cardTwoIndex].image}
+            onSelect={handleCardTwoSelect}
+          />
+        )}
+      </div>
     </div>
-  );
+  );  
 }
 
 export default FoodCardContainer;
