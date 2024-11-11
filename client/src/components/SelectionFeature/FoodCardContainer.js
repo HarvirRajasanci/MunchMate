@@ -2,12 +2,23 @@
 import React, { useState } from "react";
 import FoodCard from "./FoodCard";
 
-function FoodCardContainer() {
+function FoodCardContainer({onSelectCategory}) {
   const mainCategories = [
-    { name: "Card1", image: "https://example.com/sushi.jpg" },
-    { name: "Card2", image: "https://example.com/pizza.jpg" },
-    { name: "Card3", image: "https://example.com/pasta.jpg" },
-    { name: "Card4", image: "https://example.com/taco.jpg" },
+    { name: "Japanese", image: "./assets/japanese.png" },
+    { name: "Thai", image: "./assets/thai.png" },
+    { name: "Chinese", image: "./assets/chinese.png" },
+    { name: "Vietnamese", image: "./assets/vietnamese.png" },
+    { name: "Korean", image: "./assets/korean.png" },
+    { name: "Indian", image: "./assets/indian.png" },
+    { name: "Healthy", image: "./assets/healthy.png" },
+    { name: "BBQ", image: "./assets/bbq.png" },
+    { name: "Pizza", image: "./assets/pizza.png" },
+    { name: "Burgers", image: "./assets/burger.png" },
+    { name: "Mexican", image: "./assets/mexican.png" },
+    { name: "Greek", image: "./assets/greek.png" },
+    { name: "Caribbean", image: "./assets/caribbean.png" },
+    { name: "Fast Food", image: "./assets/fastfood.png" },
+    { name: "Seafood", image: "./assets/seafood.png" },
   ];
 
   const [cardOneIndex, setCardOneIndex] = useState(0);
@@ -26,6 +37,7 @@ function FoodCardContainer() {
     // Hide Card 2 if it's the last item
     if (currentIndex >= mainCategories.length) {
       setIsCardTwoVisible(false);
+      onSelectCategory(mainCategories[currentIndex].name); // Set the last category
     }
   };
 
@@ -38,6 +50,7 @@ function FoodCardContainer() {
     // Hide Card 1 if it's the last item
     if (currentIndex >= mainCategories.length) {
       setIsCardOneVisible(false);
+      onSelectCategory(mainCategories[currentIndex].name); // Set the last category
     }
   };
 
