@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import FoodCard from "./FoodCard";
 
-function FoodCardContainer({onSelectCategory}) {
+function FoodCardContainer({setDesiredFoodCategory}) {
   const mainCategories = [
     { name: "Japanese", image: "./assets/japanese.png" },
     { name: "Thai", image: "./assets/thai.png" },
@@ -27,8 +27,11 @@ function FoodCardContainer({onSelectCategory}) {
   const [isCardOneVisible, setIsCardOneVisible] = useState(true);
   const [isCardTwoVisible, setIsCardTwoVisible] = useState(true);
 
+  let currentCategory = "";
+
   // Handle selection on FoodCard1
   const handleCardOneSelect = () => {
+    currentCategory = mainCategories[cardOneIndex].name;
     // Check if at the end of list
     if (currentIndex < mainCategories.length) {
       setCardTwoIndex(currentIndex);
@@ -37,12 +40,13 @@ function FoodCardContainer({onSelectCategory}) {
     // Hide Card 2 if it's the last item
     if (currentIndex >= mainCategories.length) {
       setIsCardTwoVisible(false);
-      onSelectCategory(mainCategories[currentIndex].name); // Set the last category
+      setDesiredFoodCategory(currentCategory); // Set the last category
     }
   };
 
   // Handle selection on FoodCard2
   const handleCardTwoSelect = () => {
+    currentCategory = mainCategories[cardTwoIndex].name;
     if (currentIndex < mainCategories.length) {
       setCardOneIndex(currentIndex);
       setCurrentIndex((prev) => prev + 1);
@@ -50,7 +54,7 @@ function FoodCardContainer({onSelectCategory}) {
     // Hide Card 1 if it's the last item
     if (currentIndex >= mainCategories.length) {
       setIsCardOneVisible(false);
-      onSelectCategory(mainCategories[currentIndex].name); // Set the last category
+      setDesiredFoodCategory(currentCategory); // Set the last category
     }
   };
 
