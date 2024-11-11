@@ -9,7 +9,6 @@ import FoodCardContainer from "./components/SelectionFeature/FoodCardContainer.j
 function App() {
   const preferences = ["Vegetarian", "Vegan", "Gluten-Free", "Dairy-Free"];
 
-  const [showQuestion, setShowQuestion] = useState(false);
   const [selectedPreferences, setSelectedPreferences] = useState({
     Vegetarian: false,
     Vegan: false,
@@ -93,8 +92,10 @@ function App() {
           {/* Dietary Preferences Screen */}
           {screen === "preferences" && (
             <>
-              <h1 className="text-xl font-semibold text-center">
-                Choose your dietary preferences
+            {/* Chat bubble */}
+            <ChatBubble heading={"Hello!"} text={"Let's set up your preferences"}/>
+              <h1 className="text- font-semibold text-center mb-4">
+                What are your dietary restrictions?
               </h1>
 
               {/* Preference Tiles Section */}
@@ -117,16 +118,13 @@ function App() {
           {/* Desired Food Category Screen */}
           {screen === "foodSelection" && (
             <>
-              {/* Chat bubble */}
-              <ChatBubble />
-
               {/* Food Category Selection */}
               <FoodCardContainer
                 onSelectCategory={handleFoodSelection}
               />
 
               {/* Submit Button */}
-              <Button label={"Submit"} onClick={handleSubmit} />
+              <Button label={"Show me!"} onClick={handleSubmit} />
             </>
           )}
         </div>
