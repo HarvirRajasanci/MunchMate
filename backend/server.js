@@ -9,7 +9,7 @@ require('dotenv').config();
 app.use(cors()); // This will allow all origins to access your backend
 
 // Your existing backend code...
-const GOOGLE_API_KEY = process.env.GOOGLE_PLACES_API_KEY;
+const GOOGLE_API_KEY = "AIzaSyBd2BfuaPYKS4fHN1kS86JBC8GFu2Z9fEI";
 const location = "49.2664,-123.2500"; // Static location (latitude, longitude)
 //const keyword = "Thai Food Resturant";
 
