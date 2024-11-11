@@ -14,7 +14,7 @@ const FoodCard = ({ name, image, selected, onSelect }) => {
         <img
           src={image}
           alt={name}
-          className="w-full h-32 object-cover rounded-lg mt-2"
+          className="w-20 h-20 object-cover rounded-lg mt-2"
         />
       </div>
       {/*Food name*/}
