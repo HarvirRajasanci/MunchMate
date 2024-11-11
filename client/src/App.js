@@ -1,10 +1,12 @@
 import "./App.css";
 import Header from "./components/Header";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PreferenceTile from "./components/PreferenceTile";
 import ChatBubble from "./components/ChatBubble";
 import Button from "./components/Button";
 import FoodCardContainer from "./components/SelectionFeature/FoodCardContainer.js";
+import axios from "axios";
+
 
 function App() {
   const preferences = ["Vegetarian", "Vegan", "Gluten-Free", "None"];
@@ -17,6 +19,7 @@ function App() {
   });
   const [desiredFoodCategory, setDesiredFoodCategory] = useState(null);
   const [screen, setScreen] = useState("begin"); // Track current screen (begin, preferences, or food selection)
+  const [restaurants, setRestaurants] = useState([]);
 
   const handleBeginClick = () => {
     setScreen("preferences"); // Move to preferences screen
@@ -44,19 +47,38 @@ function App() {
     sendToAPI(selectedPreferences, desiredFoodCategory);
   };
 
-  const sendToAPI = async (preferences, foodCategory) => {
+  const sendToAPI = async (preferences, category) => {
+    const backendUrl = "http://localhost:5000/api/restaurants";
+    
+    // Create a list of preferences to append to the keyword (this is just one approach)
+    const preferenceKeywords = Object.keys(preferences)
+      .filter(preference => preferences[preference])
+      .join(", "); // Create a comma-separated list of active preferences
+  
+    // Construct the keyword, including dietary preferences and food category
+    const keyword = `${preferenceKeywords} ${category}`;
+  
     try {
-      const response = await fetch("https://your-api-url.com/submit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      // Send a GET request with preferences and category as query parameters
+      const response = await axios.get(backendUrl, {
+        params: {
+          keyword, // Send the constructed keyword
         },
-        body: JSON.stringify({ preferences, foodCategory }),
       });
-      const data = await response.json();
-      console.log("Data sent to API:", data);
+
+      const restaurantResults = response.data.results;
+
+      console.log(restaurantResults);
+
+      const restaurantDetails = restaurantResults.map(restaurant => ({
+        name: restaurant.name,
+        address: restaurant.vicinity,
+      }));
+
+      console.log(restaurantDetails);
+
     } catch (error) {
-      console.error("Error sending data to API:", error);
+      console.error("Error fetching data:", error);
     }
   };
 
