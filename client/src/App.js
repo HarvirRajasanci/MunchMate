@@ -121,10 +121,8 @@ function App() {
               {/* Food Category Selection */}
               <FoodCardContainer
                 setDesiredFoodCategory={handleFoodSelection}
+                handleSubmit={handleSubmit}
               />
-
-              {/* Submit Button */}
-              <Button label={"Show me!"} onClick={handleSubmit} />
             </>
           )}
         </div>
