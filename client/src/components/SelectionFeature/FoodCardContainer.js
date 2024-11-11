@@ -1,8 +1,8 @@
-// FoodCardContainer.js
 import React, { useState } from "react";
 import FoodCard from "./FoodCard";
+import Button from "../Button";
 
-function FoodCardContainer({setDesiredFoodCategory}) {
+function FoodCardContainer({ setDesiredFoodCategory, handleSubmit }) {
   const mainCategories = [
     { name: "Japanese", image: "./assets/japanese.png" },
     { name: "Thai", image: "./assets/thai.png" },
@@ -26,21 +26,21 @@ function FoodCardContainer({setDesiredFoodCategory}) {
   const [currentIndex, setCurrentIndex] = useState(2);
   const [isCardOneVisible, setIsCardOneVisible] = useState(true);
   const [isCardTwoVisible, setIsCardTwoVisible] = useState(true);
+  const [showButton, setShowButton] = useState(false); // State for button visibility
 
   let currentCategory = "";
 
   // Handle selection on FoodCard1
   const handleCardOneSelect = () => {
     currentCategory = mainCategories[cardOneIndex].name;
-    // Check if at the end of list
     if (currentIndex < mainCategories.length) {
       setCardTwoIndex(currentIndex);
       setCurrentIndex((prev) => prev + 1);
     }
-    // Hide Card 2 if it's the last item
     if (currentIndex >= mainCategories.length) {
       setIsCardTwoVisible(false);
-      setDesiredFoodCategory(currentCategory); // Set the last category
+      setDesiredFoodCategory(currentCategory);
+      setShowButton(true); // Show the button after selection
     }
   };
 
@@ -51,18 +51,23 @@ function FoodCardContainer({setDesiredFoodCategory}) {
       setCardOneIndex(currentIndex);
       setCurrentIndex((prev) => prev + 1);
     }
-    // Hide Card 1 if it's the last item
     if (currentIndex >= mainCategories.length) {
       setIsCardOneVisible(false);
-      setDesiredFoodCategory(currentCategory); // Set the last category
+      setDesiredFoodCategory(currentCategory);
+      setShowButton(true); // Show the button after selection
     }
+  };
+
+  // Handle "Show Me" button click
+  const handleShowMeClick = () => {
+    alert(`You selected: ${currentCategory}`);
   };
 
   return (
     <div className="flex flex-col items-center space-y-4">
       {/* Title above the cards */}
       <h1 className="text-xl font-semibold">Which do you prefer?</h1>
-  
+
       {/* Cards container */}
       <div className="flex space-x-4">
         {/* Card 1 - show if visible */}
@@ -74,7 +79,7 @@ function FoodCardContainer({setDesiredFoodCategory}) {
             onSelect={handleCardOneSelect}
           />
         )}
-  
+
         {/* Card 2 - show if visible */}
         {isCardTwoVisible && cardTwoIndex < mainCategories.length && (
           <FoodCard
@@ -85,8 +90,15 @@ function FoodCardContainer({setDesiredFoodCategory}) {
           />
         )}
       </div>
+
+      {/* Show "Show Me" button if showButton is true */}
+      {showButton && (
+         <Button label={"Let's Eat!"} onClick={handleSubmit} />
+        )}
+
+      
     </div>
-  );  
+  );
 }
 
 export default FoodCardContainer;
