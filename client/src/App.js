@@ -31,7 +31,6 @@ function App() {
 
   const handleFoodSelection = (category) => {
     setDesiredFoodCategory(category);
-    console.log(desiredFoodCategory)
   };
 
   const handleNext = () => {
@@ -121,7 +120,7 @@ function App() {
             <>
               {/* Food Category Selection */}
               <FoodCardContainer
-                onSelectCategory={handleFoodSelection}
+                setDesiredFoodCategory={handleFoodSelection}
               />
 
               {/* Submit Button */}
