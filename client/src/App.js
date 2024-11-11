@@ -7,13 +7,13 @@ import Button from "./components/Button";
 import FoodCardContainer from "./components/SelectionFeature/FoodCardContainer.js";
 
 function App() {
-  const preferences = ["Vegetarian", "Vegan", "Gluten-Free", "Dairy-Free"];
+  const preferences = ["Vegetarian", "Vegan", "Gluten-Free", "None"];
 
   const [selectedPreferences, setSelectedPreferences] = useState({
     Vegetarian: false,
     Vegan: false,
     "Gluten-Free": false,
-    "Dairy-Free": false,
+    "None": false,
   });
   const [desiredFoodCategory, setDesiredFoodCategory] = useState(null);
   const [screen, setScreen] = useState("begin"); // Track current screen (begin, preferences, or food selection)
