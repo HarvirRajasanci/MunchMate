@@ -31,6 +31,7 @@ function App() {
 
   const handleFoodSelection = (category) => {
     setDesiredFoodCategory(category);
+    console.log(desiredFoodCategory)
   };
 
   const handleNext = () => {
@@ -81,7 +82,7 @@ function App() {
           {/* Begin Screen */}
           {screen === "begin" && (
             <>
-              <h1 className="text-xl font-semibold text-center">
+              <h1 className="text-xl font-semibold text-center mb-5">
                 Let's find your{" "}
                 <span style={{ color: "#F36359" }}>perfect munch.</span>
               </h1>
