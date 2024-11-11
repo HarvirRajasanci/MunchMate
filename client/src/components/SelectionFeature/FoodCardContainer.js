@@ -27,6 +27,7 @@ function FoodCardContainer({ setDesiredFoodCategory, handleSubmit }) {
   const [isCardOneVisible, setIsCardOneVisible] = useState(true);
   const [isCardTwoVisible, setIsCardTwoVisible] = useState(true);
   const [showButton, setShowButton] = useState(false); // State for button visibility
+  const [matchMessage, setMatchMessage] = useState("Which do you prefer?"); // State for match message
 
   let currentCategory = "";
 
@@ -40,6 +41,7 @@ function FoodCardContainer({ setDesiredFoodCategory, handleSubmit }) {
     if (currentIndex >= mainCategories.length) {
       setIsCardTwoVisible(false);
       setDesiredFoodCategory(currentCategory);
+      setMatchMessage(`You've matched with:`); // Change message when final card is selected
       setShowButton(true); // Show the button after selection
     }
   };
@@ -54,6 +56,7 @@ function FoodCardContainer({ setDesiredFoodCategory, handleSubmit }) {
     if (currentIndex >= mainCategories.length) {
       setIsCardOneVisible(false);
       setDesiredFoodCategory(currentCategory);
+      setMatchMessage(`You've matched with: ${currentCategory}`); // Change message when final card is selected
       setShowButton(true); // Show the button after selection
     }
   };
@@ -66,7 +69,7 @@ function FoodCardContainer({ setDesiredFoodCategory, handleSubmit }) {
   return (
     <div className="flex flex-col items-center space-y-4">
       {/* Title above the cards */}
-      <h1 className="text-xl font-semibold">Which do you prefer?</h1>
+      <h1 className="text-xl font-semibold">{matchMessage}</h1>
 
       {/* Cards container */}
       <div className="flex space-x-4">
@@ -93,10 +96,8 @@ function FoodCardContainer({ setDesiredFoodCategory, handleSubmit }) {
 
       {/* Show "Show Me" button if showButton is true */}
       {showButton && (
-         <Button label={"Let's Eat!"} onClick={handleSubmit} />
-        )}
-
-      
+        <Button label={"Let's Eat!"} onClick={handleSubmit} />
+      )}
     </div>
   );
 }
